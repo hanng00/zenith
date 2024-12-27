@@ -2,8 +2,8 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
+import { cn } from "@/src/lib/utils";
+import { Button } from "@/src/components/ui/Button";
 
 interface TaskItemProps {
   text: string;

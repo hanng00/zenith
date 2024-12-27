@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, Text } from "react-native";
-import { cn } from "@/lib/utils"; // Assuming you have a utility function for combining class names
+import { cn } from "@/src/lib/utils"; // Assuming you have a utility function for combining class names
 
 // Card Component
 const Card = React.forwardRef<

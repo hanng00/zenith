@@ -1,8 +1,8 @@
 import { View } from "react-native";
 
-import ImageViewer from "@/components/ImageViewer";
-import { Button } from "@/components/ui/Button";
-import usePickImageAsync from "@/hooks/usePickImageAsync";
+import ImageViewer from "@/src/components/ImageViewer";
+import { Button } from "@/src/components/ui/Button";
+import usePickImageAsync from "@/src/hooks/usePickImageAsync";
 
 const PlaceholderImage = require("@/assets/images/background-image.webp");
 

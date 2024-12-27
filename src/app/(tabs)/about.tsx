@@ -5,7 +5,7 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 import { View } from "react-native";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/src/components/ui/Button";
 
 export default function AboutScreen() {
   const randomWidth = useSharedValue(10);
