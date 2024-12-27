@@ -1,46 +1,70 @@
-import { Link, Tabs } from 'expo-router'
-import { Button, useTheme } from 'tamagui'
-import { Atom, AudioWaveform } from '@tamagui/lucide-icons'
+import { Tabs } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+type BottomTabNavigationOptions = {
+  color: string;
+  focused: boolean;
+};
 
 export default function TabLayout() {
-  const theme = useTheme()
-
+  const screens = [
+    {
+      name: "index",
+      options: {
+        title: "Home",
+        tabBarIcon: ({ color, focused }: BottomTabNavigationOptions) => (
+          <Ionicons
+            name={focused ? "home-sharp" : "home-outline"}
+            color={color}
+            size={24}
+          />
+        ),
+      },
+    },
+    {
+      name: "tasks",
+      options: {
+        title: "Tasks",
+        tabBarIcon: ({ color, focused }: BottomTabNavigationOptions) => (
+          <Ionicons
+            name={focused ? "document" : "document-outline"}
+            color={color}
+            size={24}
+          />
+        ),
+      },
+    },
+    {
+      name: "about",
+      options: {
+        title: "About",
+        tabBarIcon: ({ color, focused }: BottomTabNavigationOptions) => (
+          <Ionicons
+            name={focused ? "information-circle" : "information-circle-outline"}
+            color={color}
+            size={24}
+          />
+        ),
+      },
+    },
+  ];
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: theme.red10.val,
-        tabBarStyle: {
-          backgroundColor: theme.background.val,
-          borderTopColor: theme.borderColor.val,
-        },
+        tabBarActiveTintColor: "hsl(142.1 56.2% 50.3%)",
         headerStyle: {
-          backgroundColor: theme.background.val,
-          borderBottomColor: theme.borderColor.val,
+          backgroundColor: "hsl(0 0% 100%)",
         },
-        headerTintColor: theme.color.val,
+        headerShadowVisible: false,
+        headerTintColor: "hsl(240 10% 3.9%)",
+        tabBarStyle: {
+          backgroundColor: "hsl(0 0% 100%)",
+        },
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <Atom color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Button mr="$4" bg="$purple8" color="$purple12">
-                Hello!
-              </Button>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <AudioWaveform color={color} />,
-        }}
-      />
+      {screens.map((screen) => (
+        <Tabs.Screen key={screen.name} {...screen} />
+      ))}
     </Tabs>
-  )
+  );
 }
