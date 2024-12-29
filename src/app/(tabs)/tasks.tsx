@@ -1,20 +1,34 @@
 import { api } from "@/convex/_generated/api";
 import TaskCard from "@/src/components/TaskCard";
 import { Button } from "@/src/components/ui/Button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/src/components/ui/Card";
+import { TextInput } from "@/src/components/ui/TextInput";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, View } from "react-native";
+import Modal from "react-native-modal";
 
 const TasksPage = () => {
   const tasks = useQuery(api.tasks.get);
   const createTask = useMutation(api.tasks.create);
 
-  const [newTask, setNewTask] = useState("");
+  const [form, setForm] = useState({
+    input: "",
+  });
+  const [modal, setModal] = useState({ visible: false });
+  const handleShowModal = () => setModal({ visible: true });
 
   const handleCreateTask = async () => {
-    if (newTask.trim() !== "") {
-      await createTask({ text: newTask });
-      setNewTask("");
+    if (form.input.trim() !== "") {
+      await createTask({ text: form.input });
+      setForm({ input: "" });
+      setModal({ visible: false });
     }
   };
 
@@ -26,7 +40,49 @@ const TasksPage = () => {
   });
 
   return (
-    <View className="h-full px-6 py-4 gap-2 bg-background">
+    <View className="h-full px-6 py-4 gap-8 bg-background">
+      <Modal
+        key={"modal"}
+        isVisible={modal.visible}
+        animationIn={"fadeIn"}
+        animationOut={"fadeOut"}
+      >
+        {/* Footer */}
+        <Card className="bg-background">
+          <CardContent>
+            <CardHeader className="px-0">
+              <CardTitle className="text-center">Create a new task</CardTitle>
+            </CardHeader>
+            <View className="flex flex-col items-left gap-2 mb-6 p-4 bg-muted rounded-lg">
+              <Text className="text-foreground text-base">Task:</Text>
+              <TextInput
+                value={form.input}
+                onChangeText={(text) => setForm({ input: text })}
+                placeholder="Name of the task"
+              />
+            </View>
+
+            <CardFooter className="px-0 pb-0">
+              <View className="flex flex-row justify-between gap-2 w-full">
+                <Button
+                  variant={"secondary"}
+                  onPress={() => setModal({ visible: false })}
+                >
+                  Close
+                </Button>
+                <Button
+                  onPress={handleCreateTask}
+                  disabled={form.input.trim() === ""}
+                  variant={"default"}
+                >
+                  Create
+                </Button>
+              </View>
+            </CardFooter>
+          </CardContent>
+        </Card>
+      </Modal>
+
       {/* Header and soon-to-be button for adding new tasks */}
       <View className="flex flex-row justify-between items-center">
         {/* Header */}
@@ -38,44 +94,29 @@ const TasksPage = () => {
         </View>
 
         {/* New Task */}
-        <Button onPress={() => {}} variant="secondary">
+        <Button onPress={handleShowModal} variant="secondary">
           New Task
         </Button>
       </View>
 
-      {/* Input Field for Adding New Task */}
-      <View className="flex-row items-center gap-2 mb-6">
-        <TextInput
-          value={newTask}
-          onChangeText={setNewTask}
-          placeholder="Add new task"
-          className="flex-1 border border-foreground rounded-lg px-4 py-2 text-base text-foreground bg-card"
-        />
-        <Button
-          onPress={handleCreateTask}
-          disabled={newTask.trim() === ""}
-          variant={"default"}
-        >
-          Create
-        </Button>
-      </View>
-
       {/* Task List */}
-      {!tasks && (
-        <View className="flex-1 justify-center items-center">
-          <Text className="text-foreground text-lg">Loading tasks...</Text>
-        </View>
-      )}
-      {tasks && tasks.length === 0 && (
-        <Text className="text-foreground text-lg text-center">
-          No tasks available.
-        </Text>
-      )}
-      {tasks &&
-        tasks.length > 0 &&
-        tasks.map((task, idx) => (
-          <TaskCard key={task._id} task={task} delay={idx * 100} />
-        ))}
+      <View className="flex flex-col gap-2">
+        {!tasks && (
+          <View className="flex-1 justify-center items-center">
+            <Text className="text-foreground text-lg">Loading tasks...</Text>
+          </View>
+        )}
+        {tasks && tasks.length === 0 && (
+          <Text className="text-foreground text-lg text-center">
+            No tasks available.
+          </Text>
+        )}
+        {tasks &&
+          tasks.length > 0 &&
+          tasks.map((task, idx) => (
+            <TaskCard key={task._id} task={task} delay={idx * 100} />
+          ))}
+      </View>
     </View>
   );
 };

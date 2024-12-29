@@ -1,6 +1,6 @@
-import * as React from "react";
-import { View, Text } from "react-native";
 import { cn } from "@/src/lib/utils"; // Assuming you have a utility function for combining class names
+import * as React from "react";
+import { Text, View } from "react-native";
 
 // Card Component
 const Card = React.forwardRef<
@@ -10,7 +10,7 @@ const Card = React.forwardRef<
   <View
     ref={ref}
     className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      "rounded-lg border border-accent bg-card text-card-foreground shadow-sm",
       className
     )}
     {...props}
@@ -39,7 +39,7 @@ const CardTitle = React.forwardRef<
   <Text
     ref={ref}
     className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
+      "text-xl font-semibold leading-none tracking-tight text-foreground",
       className
     )}
     {...props}
@@ -83,10 +83,6 @@ const CardFooter = React.forwardRef<
 CardFooter.displayName = "CardFooter";
 
 export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardContent,
+  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
 };
+
