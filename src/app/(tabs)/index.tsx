@@ -10,7 +10,7 @@ export default function Index() {
   const { selectedImage, pickImageAsync } = usePickImageAsync();
 
   return (
-    <View className="flex flex-col items-center h-full p-4">
+    <View className="flex flex-col items-center h-full p-4 bg-background">
       <View className="flex-1">
         <ImageViewer
           imgSource={PlaceholderImage}

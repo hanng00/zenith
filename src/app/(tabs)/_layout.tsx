@@ -1,5 +1,8 @@
-import { Tabs } from "expo-router";
+import "@/src/globals.css"; // Import global styles
+import { cn } from "@/src/lib/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Tabs } from "expo-router";
+import { View } from "react-native";
 
 type BottomTabNavigationOptions = {
   color: string;
@@ -7,6 +10,7 @@ type BottomTabNavigationOptions = {
 };
 
 export default function TabLayout() {
+  const iconSize = 20;
   const screens = [
     {
       name: "index",
@@ -16,7 +20,7 @@ export default function TabLayout() {
           <Ionicons
             name={focused ? "home-sharp" : "home-outline"}
             color={color}
-            size={24}
+            size={iconSize}
           />
         ),
       },
@@ -29,7 +33,7 @@ export default function TabLayout() {
           <Ionicons
             name={focused ? "document" : "document-outline"}
             color={color}
-            size={24}
+            size={iconSize}
           />
         ),
       },
@@ -42,29 +46,38 @@ export default function TabLayout() {
           <Ionicons
             name={focused ? "information-circle" : "information-circle-outline"}
             color={color}
-            size={24}
+            size={iconSize}
           />
         ),
       },
     },
   ];
+
+  const hsl = (_str: string): string => {
+    return `hsl(${_str})`;
+  };
+
+  const theme = "dark";
+
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "hsl(142.1 56.2% 50.3%)",
-        headerStyle: {
-          backgroundColor: "hsl(0 0% 100%)",
-        },
-        headerShadowVisible: false,
-        headerTintColor: "hsl(240 10% 3.9%)",
-        tabBarStyle: {
-          backgroundColor: "hsl(0 0% 100%)",
-        },
-      }}
-    >
-      {screens.map((screen) => (
-        <Tabs.Screen key={screen.name} {...screen} />
-      ))}
-    </Tabs>
+    <View className={cn("h-full w-full", theme)}>
+      <Tabs
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: hsl("165 27% 13%"),
+          },
+          headerTintColor: hsl("165 27% 87%"),
+          headerShadowVisible: false,
+          tabBarStyle: {
+            backgroundColor: hsl("165 10% 20%"),
+          },
+          tabBarActiveTintColor: hsl("165 20% 65%"),
+        }}
+      >
+        {screens.map((screen) => (
+          <Tabs.Screen key={screen.name} {...screen} />
+        ))}
+      </Tabs>
+    </View>
   );
 }

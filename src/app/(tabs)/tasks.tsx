@@ -1,30 +1,13 @@
 import { api } from "@/convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { useState } from "react";
-import { cn } from "@/src/lib/utils";
+import TaskCard from "@/src/components/TaskCard";
 import { Button } from "@/src/components/ui/Button";
-
-interface TaskItemProps {
-  text: string;
-  onRemove: () => void;
-}
-
-const TaskItem = ({ text, onRemove }: TaskItemProps) => {
-  return (
-    <View className="flex-row justify-between items-center border border-foreground rounded-lg mb-4 px-4 py-2 bg-card">
-      <Text className="text-foreground text-base">{text}</Text>
-      <Button onPress={onRemove} variant="link" size="sm">
-        Remove
-      </Button>
-    </View>
-  );
-};
+import { useMutation, useQuery } from "convex/react";
+import { useState } from "react";
+import { Text, TextInput, View } from "react-native";
 
 const TasksPage = () => {
   const tasks = useQuery(api.tasks.get);
   const createTask = useMutation(api.tasks.create);
-  const removeTask = useMutation(api.tasks.remove);
 
   const [newTask, setNewTask] = useState("");
 
@@ -35,16 +18,31 @@ const TasksPage = () => {
     }
   };
 
-  if (!tasks) {
-    return (
-      <View className="flex-1 justify-center items-center bg-background">
-        <Text className="text-foreground text-lg">Loading tasks...</Text>
-      </View>
-    );
-  }
+  // Today's date, written as 'Wednesday, 11 May'
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
 
   return (
-    <View className="flex-1 px-6 py-4">
+    <View className="h-full px-6 py-4 gap-2 bg-background">
+      {/* Header and soon-to-be button for adding new tasks */}
+      <View className="flex flex-row justify-between items-center">
+        {/* Header */}
+        <View className="flex flex-col items-start">
+          <Text className="text-foreground text-2xl font-bold">
+            Today's Task
+          </Text>
+          <Text className="text-foreground/50 text-md">{today}</Text>
+        </View>
+
+        {/* New Task */}
+        <Button onPress={() => {}} variant="secondary">
+          New Task
+        </Button>
+      </View>
+
       {/* Input Field for Adding New Task */}
       <View className="flex-row items-center gap-2 mb-6">
         <TextInput
@@ -63,19 +61,21 @@ const TasksPage = () => {
       </View>
 
       {/* Task List */}
-      {tasks.length === 0 ? (
+      {!tasks && (
+        <View className="flex-1 justify-center items-center">
+          <Text className="text-foreground text-lg">Loading tasks...</Text>
+        </View>
+      )}
+      {tasks && tasks.length === 0 && (
         <Text className="text-foreground text-lg text-center">
           No tasks available.
         </Text>
-      ) : (
-        tasks.map(({ _id, text }) => (
-          <TaskItem
-            key={_id}
-            text={text}
-            onRemove={() => removeTask({ taskId: _id })}
-          />
-        ))
       )}
+      {tasks &&
+        tasks.length > 0 &&
+        tasks.map((task, idx) => (
+          <TaskCard key={task._id} task={task} delay={idx * 100} />
+        ))}
     </View>
   );
 };

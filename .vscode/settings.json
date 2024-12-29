@@ -1,0 +1,12 @@
+{
+  // Default tab size for all languages is 2
+  "editor.tabSize": 2,
+
+  // The formatter to use for JavaScript and TypeScript.
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Remove unused imports
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  }
+}

@@ -1,11 +1,11 @@
+import { Button } from "@/src/components/ui/Button";
+import { View } from "react-native";
 import Animated, {
+  Easing,
+  useAnimatedStyle,
   useSharedValue,
   withTiming,
-  useAnimatedStyle,
-  Easing,
 } from "react-native-reanimated";
-import { View } from "react-native";
-import { Button } from "@/src/components/ui/Button";
 
 export default function AboutScreen() {
   const randomWidth = useSharedValue(10);
@@ -22,9 +22,9 @@ export default function AboutScreen() {
   });
 
   return (
-    <View className="flex items-center justify-center h-full">
+    <View className="flex items-center justify-center h-full bg-background">
       <Animated.View
-        className={"w-[100px] h-[80px] bg-foreground m-[30px]"}
+        className={"w-[100px] h-[80px] bg-primary rounded-lg m-[30px]"}
         style={style}
       />
       <Button
